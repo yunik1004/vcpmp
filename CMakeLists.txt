@@ -13,6 +13,9 @@ set (VCPMP_SUBMODULES_DIR ${PROJECT_SOURCE_DIR}/submodules)
 # cxxopts
 add_subdirectory(${VCPMP_SUBMODULES_DIR}/cxxopts cxxopts EXCLUDE_FROM_ALL)
 
+# yaml-cpp
+add_subdirectory(${VCPMP_SUBMODULES_DIR}/yaml-cpp yaml-cpp EXCLUDE_FROM_ALL)
+
 # Add source to this project's executable.
 file (GLOB_RECURSE VCPMP_CPP_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 file (GLOB_RECURSE VCPMP_HPP_FILES ${PROJECT_SOURCE_DIR}/src/*.hpp)
@@ -24,4 +27,5 @@ add_executable (${VCPMP_APP_TARGET}
 
 target_link_libraries(${VCPMP_APP_TARGET}
     cxxopts
+    yaml-cpp
 )

@@ -1,3 +1,6 @@
 [submodule "submodules/cxxopts"]
 	path = submodules/cxxopts
 	url = https://github.com/jarro2783/cxxopts.git
+[submodule "submodules/yaml-cpp"]
+	path = submodules/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git
