@@ -8,6 +8,8 @@ init:
   - ps: iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
   - scoop install cmake
   - scoop install ninja
+  - set CC=clang-cl
+  - set CXX=clang-cl
 
 before_build:
   - mkdir build
