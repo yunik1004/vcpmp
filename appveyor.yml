@@ -1,0 +1,17 @@
+os: Visual Studio 2017
+
+platform:
+  - x86
+  - x64
+
+init:
+  - choco install -y cmake
+  - choco install -y ninja
+
+before_build:
+  - cd build
+  - mkdir build
+  - cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE
+
+build_script:
+  - ninja
