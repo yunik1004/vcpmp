@@ -5,7 +5,6 @@ platform:
   - x64
 
 init:
-  - ps: Set-ExecutionPolicy RemoteSigned -scope CurrentUser
   - ps: iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
   - scoop install cmake
   - scoop install ninja
