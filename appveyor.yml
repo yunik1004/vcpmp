@@ -6,7 +6,7 @@ platform:
 
 init:
   - ps: iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
-  - scoop install clang
+  - scoop install llvm
   - scoop install cmake
   - scoop install ninja
   - set CC=clang-cl
