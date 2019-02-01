@@ -62,6 +62,20 @@ VCPMP::ARCH VCPMP::StrToARCH(std::string str) {
     return VCPMP::ARCH::ERROR;
 }
 
+VCPMP::OS VCPMP::StrToOS(std::string str) {
+    if (str.compare(OS_WINDOWS) == 0) {
+        return VCPMP::OS::WINDOWS;
+    } else if (str.compare(OS_LINUX) == 0) {
+        return VCPMP::OS::LINUX;
+    } else if (str.compare(OS_DARWIN) == 0) {
+        return VCPMP::OS::DARWIN;
+    } else if (str.compare(OS_UWP) == 0) {
+        return VCPMP::OS::UWP;
+    }
+
+    return VCPMP::OS::ERROR;
+}
+
 VCPMP::LINK VCPMP::StrToLINK(std::string str) {
     if (str.compare(LINK_DYNAMIC) == 0) {
         return VCPMP::LINK::DYNAMIC;
@@ -82,9 +96,9 @@ VCPMP::OS VCPMP::getOS() {
     return VCPMP::OS::WINDOWS;
 }
 
-void VCPMP::install_vcpkg_library(const char* vcpkg_root, std::string name, VCPMP::ARCH arch, VCPMP::LINK link) {
+void VCPMP::install_vcpkg_library(const char* vcpkg_root, std::string name, VCPMP::ARCH arch, VCPMP::OS os, VCPMP::LINK link) {
     std::string command_str = vcpkg_root;
-    command_str += "/vcpkg install " + name + ":" + VCPMP::ToStr(arch) + "-" + VCPMP::ToStr(VCPMP::getOS());
+    command_str += "/vcpkg install " + name + ":" + VCPMP::ToStr(arch) + "-" + VCPMP::ToStr(os);
     if (link == VCPMP::LINK::STATIC) {
         command_str +=  + "-" + VCPMP::ToStr(link);
     }

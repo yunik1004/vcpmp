@@ -16,7 +16,8 @@ namespace VCPMP {
         WINDOWS,
         LINUX,
         DARWIN,
-        UWP
+        UWP,
+        ERROR // Error
     };
 
     enum class LINK {
@@ -30,11 +31,12 @@ namespace VCPMP {
     std::string ToStr(LINK link);
 
     ARCH StrToARCH(std::string str);
+    OS StrToOS(std::string str);
     LINK StrToLINK(std::string str);
 
     ARCH getArch();
 
     OS getOS();
 
-    void install_vcpkg_library(const char* vcpkg_root, std::string name, ARCH arch, LINK link);
+    void install_vcpkg_library(const char* vcpkg_root, std::string name, ARCH arch, OS os, LINK link);
 }

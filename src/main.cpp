@@ -35,10 +35,21 @@ void parse_yaml (const char* vcpkg_root) {
     try {
         const YAML::Node& config = YAML::LoadFile(VCPKG_CONFIG_FILE);
 
+        VCPMP::OS os_default;
         VCPMP::ARCH arch_default;
         VCPMP::LINK link_default;
 
         if (config["default"]) {
+            if (config["default"]["os"]) {
+                os_default = VCPMP::StrToOS(config["default"]["os"].as<std::string>());
+                if (os_default == VCPMP::OS::ERROR) {
+                    std::cerr << "Error parsing " << VCPKG_CONFIG_FILE << ": wrong default os" << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+            } else {
+                os_default = VCPMP::getOS();
+            }
+
             if (config["default"]["arch"]) { // "x86", "x64", "arm", or "arm64"
                 arch_default = VCPMP::StrToARCH(config["default"]["arch"].as<std::string>());
                 if (arch_default == VCPMP::ARCH::ERROR) {
@@ -46,7 +57,7 @@ void parse_yaml (const char* vcpkg_root) {
                     exit(EXIT_FAILURE);
                 }
             } else {
-                switch (VCPMP::getOS()) {
+                switch (os_default) {
                     case VCPMP::OS::WINDOWS:
                         arch_default = VCPMP::ARCH::X86;
                         break;
@@ -94,7 +105,7 @@ void parse_yaml (const char* vcpkg_root) {
                 lib_link = link_default;
             }
 
-            VCPMP::install_vcpkg_library(vcpkg_root, lib_name, lib_arch, lib_link);
+            VCPMP::install_vcpkg_library(vcpkg_root, lib_name, lib_arch, os_default, lib_link);
         }
     } catch (const YAML::BadFile& e) {
         std::cerr << "Error loading " << VCPKG_CONFIG_FILE << ": " << e.what() << std::endl;
