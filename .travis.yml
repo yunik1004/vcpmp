@@ -7,16 +7,14 @@ matrix:
       addons:
         apt:
           sources:
-            - llvm-toolchain-trusty
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-7
           packages:
-            - clang-3.8
+            - clang-7
       env:
-        - CC_COMPILER=clang-3.8
-        - CXX_COMPILER=clang++-3.8
+        - CC_COMPILER=clang-7
+        - CXX_COMPILER=clang++-7
     - os: osx
-
-compiler:
-  - clang
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
@@ -24,7 +22,7 @@ before_install:
 
 install:
   - git submodule update --init
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y clang cmake ninja-build; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y cmake ninja-build; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew outdated cmake || brew upgrade cmake; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ninja; fi
 
