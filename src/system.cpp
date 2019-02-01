@@ -21,9 +21,8 @@ std::string VCPMP::ToStr(VCPMP::ARCH arch) {
         case VCPMP::ARCH::X64: return ARCH_X64;
         case VCPMP::ARCH::ARM: return ARCH_ARM;
         case VCPMP::ARCH::ARM64: return ARCH_ARM64;
+        default: exit(EXIT_FAILURE);
     }
-
-    exit(EXIT_FAILURE);
 }
 
 std::string VCPMP::ToStr(VCPMP::OS os) {
@@ -32,18 +31,16 @@ std::string VCPMP::ToStr(VCPMP::OS os) {
         case VCPMP::OS::LINUX: return OS_LINUX;
         case VCPMP::OS::DARWIN: return OS_DARWIN;
         case VCPMP::OS::UWP: return OS_UWP;
+        default: exit(EXIT_FAILURE);
     }
-
-    exit(EXIT_FAILURE);
 }
 
 std::string VCPMP::ToStr(VCPMP::LINK link) {
     switch (link) {
         case VCPMP::LINK::DYNAMIC: return LINK_DYNAMIC;
         case VCPMP::LINK::STATIC: return LINK_STATIC;
+        default: exit(EXIT_FAILURE);
     }
-
-    exit(EXIT_FAILURE);
 }
 
 VCPMP::ARCH VCPMP::StrToARCH(std::string str) {

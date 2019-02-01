@@ -1,5 +1,7 @@
 # vcpmp
 
+[![Build status](https://ci.appveyor.com/api/projects/status/tfair23wjxblvyt2/branch/master?svg=true)](https://ci.appveyor.com/project/yunik1004/vcpmp/branch/master)
+
 ## Overview
 vcpkg per project
 
@@ -8,6 +10,7 @@ vcpkg per project
 ### Prerequisites
 * Git
 * Cmake
+* Clang
 * Ninja
 
 ### How to Build
@@ -21,8 +24,22 @@ Next, run the following codes:
 ```bash
 mkdir build
 cd build
-cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE
+cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
 ninja
+```
+
+### Possible Errors
+
+If you are using Windows10/powershell then the following CMake Error might be occurred
+```powershell
+The C compiler
+   "C:/.../clang-cl.exe"
+  is not able to compile a simple test program.
+```
+
+Then, run the following command before building to remove this error
+```powershell
+cmd /c "`"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat`" x86_amd64 & powershell"
 ```
 
 ## Document
@@ -67,7 +84,7 @@ Default options:
 
 Next, you have to run the following command in the same directory with created 'vcpkg.config.yaml' file.
 ```bash
-vcpmp --install
+./vcpmp --install
 ```
 
 Then, this program will automatically install every package using vcpkg.

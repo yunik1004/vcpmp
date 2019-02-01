@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <cxxopts.hpp>
@@ -119,14 +120,20 @@ void parse_yaml (const char* vcpkg_root) {
 int main(int argc, char* argv[]) {
     auto result = parse_opts(argc, argv);
 
-    const char* vcpkg_root = getenv(VCPKG_ROOT);
-    if (vcpkg_root == nullptr) {
+    size_t vcpkg_root_size;
+
+    getenv_s(&vcpkg_root_size, NULL, 0, VCPKG_ROOT);
+    if (vcpkg_root_size == 0) {
         std::cerr << "Error: you need to set '" << VCPKG_ROOT << "' environment variable" << std::endl;
         return EXIT_FAILURE;
     }
 
+    char* vcpkg_root = new char[vcpkg_root_size];
+
+    getenv_s(&vcpkg_root_size, vcpkg_root, vcpkg_root_size, VCPKG_ROOT);
+
     if (result.count("i")) {
-        parse_yaml(vcpkg_root);
+        parse_yaml((const char*) vcpkg_root);
     }
 
     return EXIT_SUCCESS;

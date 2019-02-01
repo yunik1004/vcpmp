@@ -8,15 +8,13 @@ init:
   - ps: iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
   - scoop install cmake
   - scoop install ninja
-  - set CC=clang-cl
-  - set CXX=clang-cl
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
 
 before_build:
   - git submodule update --init
   - mkdir build
   - cd build
-  - cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE
+  - cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
 
 build_script:
   - ninja
