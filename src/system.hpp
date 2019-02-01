@@ -35,5 +35,5 @@ namespace VCPMP {
 
     OS getOS();
 
-    void install_vcpkg_library(const char* vcpkg_root, ARCH arch, LINK link);
+    void install_vcpkg_library(const char* vcpkg_root, std::string name, ARCH arch, LINK link);
 }

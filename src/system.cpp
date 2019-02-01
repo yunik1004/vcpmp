@@ -80,6 +80,14 @@ VCPMP::OS VCPMP::getOS() {
     return VCPMP::OS::WINDOWS;
 }
 
-void VCPMP::install_vcpkg_library(const char* vcpkg_root, VCPMP::ARCH arch, VCPMP::LINK link) {
-    // TODO
+void VCPMP::install_vcpkg_library(const char* vcpkg_root, std::string name, VCPMP::ARCH arch, VCPMP::LINK link) {
+    std::string command_str = vcpkg_root;
+    command_str += "/vcpkg install " + name + ":" + VCPMP::ToStr(arch) + "-" + VCPMP::ToStr(VCPMP::getOS());
+    if (link == VCPMP::LINK::STATIC) {
+        command_str +=  + "-" + VCPMP::ToStr(link);
+    }
+    const char* command = command_str.c_str();
+    
+    std::cout << command << std::endl;
+    //system(command);
 }

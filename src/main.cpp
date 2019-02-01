@@ -94,7 +94,7 @@ void parse_yaml (const char* vcpkg_root) {
                 lib_link = link_default;
             }
 
-            VCPMP::install_vcpkg_library(vcpkg_root, lib_arch, lib_link);
+            VCPMP::install_vcpkg_library(vcpkg_root, lib_name, lib_arch, lib_link);
         }
     } catch (const YAML::BadFile& e) {
         std::cerr << "Error loading " << VCPKG_CONFIG_FILE << ": " << e.what() << std::endl;
