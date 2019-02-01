@@ -1,6 +1,6 @@
 # vcpmp
 
-[![Build status](https://ci.appveyor.com/api/projects/status/tfair23wjxblvyt2/branch/master?svg=true)](https://ci.appveyor.com/project/yunik1004/vcpmp/branch/master)
+[![Build Status](https://travis-ci.com/yunik1004/vcpmp.svg?branch=master)](https://travis-ci.com/yunik1004/vcpmp) [![Build status](https://ci.appveyor.com/api/projects/status/tfair23wjxblvyt2/branch/master?svg=true)](https://ci.appveyor.com/project/yunik1004/vcpmp/branch/master)
 
 ## Overview
 vcpkg per project
