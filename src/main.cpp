@@ -1,4 +1,4 @@
-#include <cstdlib>
+//#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <cxxopts.hpp>
@@ -120,6 +120,7 @@ void parse_yaml (const char* vcpkg_root) {
 int main(int argc, char* argv[]) {
     auto result = parse_opts(argc, argv);
 
+/*
     size_t vcpkg_root_size;
 
     getenv_s(&vcpkg_root_size, NULL, 0, VCPKG_ROOT);
@@ -134,6 +135,13 @@ int main(int argc, char* argv[]) {
 
     if (result.count("i")) {
         parse_yaml((const char*) vcpkg_root);
+    }
+*/
+
+    const char* vcpkg_root = getenv(VCPKG_ROOT);
+
+    if (result.count("i")) {
+        parse_yaml(vcpkg_root);
     }
 
     return EXIT_SUCCESS;
