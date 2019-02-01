@@ -9,9 +9,6 @@ compiler:
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
-  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo apt-get install -qq; fi
-  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
-  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo apt-get update -qq; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 
 install:
@@ -23,5 +20,6 @@ install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE; fi
   - ninja

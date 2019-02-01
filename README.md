@@ -20,11 +20,26 @@ First, clone this repository recursively:
 git clone --recursive
 ```
 
-Next, run the following codes:
+Next, make build folder and change cwd
 ```bash
 mkdir build
 cd build
+```
+
+Next, run the following command to generate ninja files:
+
+Windows, Linux:
+```bash
 cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
+```
+
+OSX:
+```bash
+cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE
+```
+
+Finally, generate executable file
+```bash
 ninja
 ```
 
