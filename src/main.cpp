@@ -32,55 +32,76 @@ cxxopts::ParseResult parse_opts(int argc, char* argv[]) {
 }
 
 void parse_yaml (const char* vcpkg_root) {
-    YAML::Node config;
-
     try {
-        config = YAML::LoadFile(VCPKG_CONFIG_FILE);
+        const YAML::Node& config = YAML::LoadFile(VCPKG_CONFIG_FILE);
+
+        VCPMP::ARCH arch_default;
+        VCPMP::LINK link_default;
+
+        if (config["default"]) {
+            if (config["default"]["arch"]) { // "x86", "x64", "arm", or "arm64"
+                arch_default = VCPMP::StrToARCH(config["default"]["arch"].as<std::string>());
+                if (arch_default == VCPMP::ARCH::ERROR) {
+                    std::cerr << "Error parsing " << VCPKG_CONFIG_FILE << ": wrong default architecture" << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+            } else {
+                switch (VCPMP::getOS()) {
+                    case VCPMP::OS::WINDOWS:
+                        arch_default = VCPMP::ARCH::X86;
+                        break;
+                    default:
+                        arch_default = VCPMP::ARCH::X64;
+                        break;
+                }
+            }
+
+            if (config["default"]["link"]) { // "static" or "dynamic"
+                link_default = VCPMP::StrToLINK(config["default"]["link"].as<std::string>());
+                if (link_default == VCPMP::LINK::ERROR) {
+                    std::cerr << "Error parsing " << VCPKG_CONFIG_FILE << ": wrong default link configuration" << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+            } else {
+                link_default = VCPMP::LINK::DYNAMIC;
+            }
+        }
+
+        const YAML::Node& libraries = config["library"];
+        for(YAML::const_iterator it = libraries.begin(); it != libraries.end(); ++it) {
+            std::string lib_name = it->first.as<std::string>();
+
+            VCPMP::ARCH lib_arch;
+            VCPMP::LINK lib_link;
+
+            if (it->second["arch"]) {
+                lib_arch = VCPMP::StrToARCH(it->second["arch"].as<std::string>());
+                if (lib_arch == VCPMP::ARCH::ERROR) {
+                    std::cerr << "Error parsing " << VCPKG_CONFIG_FILE << ": wrong architecture" << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+            } else {
+                lib_arch = arch_default;
+            }
+
+            if (it->second["link"]) {
+                lib_link = VCPMP::StrToLINK(it->second["link"].as<std::string>());
+                if (lib_link == VCPMP::LINK::ERROR) {
+                    std::cerr << "Error parsing " << VCPKG_CONFIG_FILE << ": wrong link configuration" << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+            } else {
+                lib_link = link_default;
+            }
+
+            VCPMP::install_vcpkg_library(vcpkg_root, lib_arch, lib_link);
+        }
     } catch (const YAML::BadFile& e) {
         std::cerr << "Error loading " << VCPKG_CONFIG_FILE << ": " << e.what() << std::endl;
         exit(EXIT_FAILURE);
     } catch (const YAML::ParserException& e) {
         std::cerr << "Error parsing " << VCPKG_CONFIG_FILE << ": wrong structured file" << std::endl;
         exit(EXIT_FAILURE);
-    }
-
-    VCPMP::ARCH arch_default;
-    VCPMP::LINK link_default;
-
-    if (config["default"]) {
-        if (config["default"]["arch"]) { // "x86", "x64", "arm", or "arm64"
-            arch_default = VCPMP::StrToARCH(config["default"]["arch"].as<std::string>());
-            if (arch_default == VCPMP::ARCH::ERROR) {
-                std::cerr << "Error parsing " << VCPKG_CONFIG_FILE << ": wrong default architecture" << std::endl;
-                exit(EXIT_FAILURE);
-            }
-        } else {
-            switch (VCPMP::getOS()) {
-                case VCPMP::OS::WINDOWS:
-                    arch_default = VCPMP::ARCH::X86;
-                    break;
-                default:
-                    arch_default = VCPMP::ARCH::X64;
-                    break;
-            }
-        }
-
-        if (config["default"]["link"]) { // "static" or "dynamic"
-            link_default = VCPMP::StrToLINK(config["default"]["link"].as<std::string>());
-            if (link_default == VCPMP::LINK::ERROR) {
-                std::cerr << "Error parsing " << VCPKG_CONFIG_FILE << ": wrong default link configuration" << std::endl;
-                exit(EXIT_FAILURE);
-            }
-        } else {
-            link_default = VCPMP::LINK::DYNAMIC;
-        }
-    }
-
-    const YAML::Node& libraries = config["library"];
-    for (unsigned int i = 0; i < libraries.size(); ++i) {
-        std::cout << libraries[i] << std::endl;
-
-        // TODO: install libraries
     }
 }
 

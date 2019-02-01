@@ -5,6 +5,7 @@
 #define ARCH_X64 "x64"
 #define ARCH_ARM "arm"
 #define ARCH_ARM64 "arm64"
+#define ARCH_CURRENT "current"
 
 #define OS_WINDOWS "windows"
 #define OS_LINUX "linux"
@@ -34,6 +35,15 @@ std::string VCPMP::ToStr(VCPMP::OS os) {
     exit(EXIT_FAILURE);
 }
 
+std::string VCPMP::ToStr(VCPMP::LINK link) {
+    switch (link) {
+        case VCPMP::LINK::DYNAMIC: return LINK_DYNAMIC;
+        case VCPMP::LINK::STATIC: return LINK_STATIC;
+    }
+
+    exit(EXIT_FAILURE);
+}
+
 VCPMP::ARCH VCPMP::StrToARCH(std::string str) {
     if (str.compare(ARCH_X86) == 0) {
         return VCPMP::ARCH::X86;
@@ -43,6 +53,8 @@ VCPMP::ARCH VCPMP::StrToARCH(std::string str) {
         return VCPMP::ARCH::ARM;
     } else if (str.compare(ARCH_ARM64) == 0) {
         return VCPMP::ARCH::ARM64;
+    } else if (str.compare(ARCH_CURRENT) == 0) {
+        return VCPMP::getArch();
     }
 
     return VCPMP::ARCH::ERROR;
@@ -58,10 +70,16 @@ VCPMP::LINK VCPMP::StrToLINK(std::string str) {
     return VCPMP::LINK::ERROR;
 }
 
+VCPMP::ARCH VCPMP::getArch() {
+    // TODO
+    return VCPMP::ARCH::X64;
+}
+
 VCPMP::OS VCPMP::getOS() {
+    // TODO
     return VCPMP::OS::WINDOWS;
 }
 
-std::string VCPMP::getOS_str() {
-    return VCPMP::ToStr(VCPMP::getOS());
+void VCPMP::install_vcpkg_library(const char* vcpkg_root, VCPMP::ARCH arch, VCPMP::LINK link) {
+    // TODO
 }

@@ -8,6 +8,7 @@ namespace VCPMP {
         X64,
         ARM,
         ARM64,
+        CURRENT,
         ERROR // Error
     };
 
@@ -25,10 +26,14 @@ namespace VCPMP {
 
     std::string ToStr(ARCH arch);
     std::string ToStr(OS os);
+    std::string ToStr(LINK link);
 
     ARCH StrToARCH(std::string str);
     LINK StrToLINK(std::string str);
 
+    ARCH getArch();
+
     OS getOS();
-    std::string getOS_str();
+
+    void install_vcpkg_library(const char* vcpkg_root, ARCH arch, LINK link);
 }
