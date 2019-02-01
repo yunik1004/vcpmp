@@ -15,7 +15,8 @@ namespace VCPMP {
     enum class OS {
         WINDOWS,
         LINUX,
-        DARWIN
+        DARWIN,
+        UWP
     };
 
     enum class LINK {

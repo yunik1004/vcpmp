@@ -10,6 +10,7 @@
 #define OS_WINDOWS "windows"
 #define OS_LINUX "linux"
 #define OS_DARWIN "osx"
+#define OS_UWP "uwp"
 
 #define LINK_DYNAMIC "dynamic"
 #define LINK_STATIC "static"
@@ -30,6 +31,7 @@ std::string VCPMP::ToStr(VCPMP::OS os) {
         case VCPMP::OS::WINDOWS: return OS_WINDOWS;
         case VCPMP::OS::LINUX: return OS_LINUX;
         case VCPMP::OS::DARWIN: return OS_DARWIN;
+        case VCPMP::OS::UWP: return OS_UWP;
     }
 
     exit(EXIT_FAILURE);
