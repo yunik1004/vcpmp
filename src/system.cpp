@@ -87,13 +87,22 @@ VCPMP::LINK VCPMP::StrToLINK(std::string str) {
 }
 
 VCPMP::ARCH VCPMP::getArch() {
-    // TODO
-    return VCPMP::ARCH::X64;
+    switch (sizeof(void*)) {
+        case 4: return VCPMP::ARCH::X86;
+        case 8: return VCPMP::ARCH::X64;
+    }
+
+    return VCPMP::ARCH::ERROR;
 }
 
 VCPMP::OS VCPMP::getOS() {
-    // TODO
+    #if defined(_WIN32) || defined(_WIN64)
     return VCPMP::OS::WINDOWS;
+    #elif __APPLE__ || __MACH__
+    return VCPMP::OS::DARWIN;
+    #else
+    return VCPMP::OS::LINUX;
+    #endif
 }
 
 void VCPMP::install_vcpkg_library(const char* vcpkg_root, std::string name, VCPMP::ARCH arch, VCPMP::OS os, VCPMP::LINK link) {
