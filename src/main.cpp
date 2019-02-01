@@ -2,6 +2,7 @@
 #include <string>
 #include <cxxopts.hpp>
 #include <yaml-cpp/yaml.h>
+#include "system.hpp"
 
 #define VCPKG_ROOT "VCPKG_ROOT"
 #define VCPKG_CONFIG_FILE "vcpkg.config.yaml"
@@ -31,8 +32,6 @@ cxxopts::ParseResult parse_opts(int argc, char* argv[]) {
 }
 
 void parse_yaml (const char* vcpkg_root) {
-    // TODO: Find current architecture
-
     YAML::Node config;
 
     try {
@@ -45,20 +44,35 @@ void parse_yaml (const char* vcpkg_root) {
         exit(EXIT_FAILURE);
     }
 
-    std::string arch_default;
-    std::string link_default;
+    VCPMP::ARCH arch_default;
+    VCPMP::LINK link_default;
 
     if (config["default"]) {
         if (config["default"]["arch"]) { // "x86", "x64", "arm", or "arm64"
-            arch_default = config["default"]["arch"].as<std::string>();
+            arch_default = VCPMP::StrToARCH(config["default"]["arch"].as<std::string>());
+            if (arch_default == VCPMP::ARCH::ERROR) {
+                std::cerr << "Error parsing " << VCPKG_CONFIG_FILE << ": wrong default architecture" << std::endl;
+                exit(EXIT_FAILURE);
+            }
         } else {
-            arch_default = "x86"; // TODO: change default to current architecture
+            switch (VCPMP::getOS()) {
+                case VCPMP::OS::WINDOWS:
+                    arch_default = VCPMP::ARCH::X86;
+                    break;
+                default:
+                    arch_default = VCPMP::ARCH::X64;
+                    break;
+            }
         }
 
         if (config["default"]["link"]) { // "static" or "dynamic"
-            link_default = config["default"]["link"].as<std::string>();
+            link_default = VCPMP::StrToLINK(config["default"]["link"].as<std::string>());
+            if (link_default == VCPMP::LINK::ERROR) {
+                std::cerr << "Error parsing " << VCPKG_CONFIG_FILE << ": wrong default link configuration" << std::endl;
+                exit(EXIT_FAILURE);
+            }
         } else {
-            link_default = "dynamic";
+            link_default = VCPMP::LINK::DYNAMIC;
         }
     }
 
