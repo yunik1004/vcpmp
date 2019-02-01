@@ -113,6 +113,5 @@ void VCPMP::install_vcpkg_library(const char* vcpkg_root, std::string name, VCPM
     }
     const char* command = command_str.c_str();
     
-    std::cout << command << std::endl;
-    //system(command);
+    system(command);
 }
