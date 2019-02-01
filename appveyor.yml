@@ -5,8 +5,10 @@ platform:
   - x64
 
 init:
-  - choco install -y cmake
-  - choco install -y ninja
+  - ps: Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+  - ps: iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
+  - scoop install cmake
+  - scoop install ninja
 
 before_build:
   - mkdir build
