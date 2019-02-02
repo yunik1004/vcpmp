@@ -9,6 +9,8 @@ init:
   - scoop install cmake
   - scoop install ninja
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
+  - if "%platform%" == "x86" SET CFLAGS=-m32
+  - if "%platform%" == "x86" SET CXXFLAGS=-m32
 
 before_build:
   - git submodule update --init
