@@ -29,3 +29,11 @@ target_link_libraries(${VCPMP_APP_TARGET}
     cxxopts
     yaml-cpp
 )
+
+# CPack settings
+INSTALL (TARGETS ${VCPMP_APP_TARGET} DESTINATION .)
+
+SET (CPACK_GENERATOR "ZIP")
+SET (CPACK_PACKAGE_VERSION "0.1.0")
+
+INCLUDE (CPack)

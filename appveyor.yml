@@ -17,4 +17,4 @@ before_build:
   - cmake .. -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
 
 build_script:
-  - ninja
+  - ninja package
