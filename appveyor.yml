@@ -1,16 +1,20 @@
 os: Visual Studio 2017
 
 platform:
-  - x86
+  #- x86
   - x64
+
+artifacts:
+  - path: build/vcpmp-*-*.zip
+    name: vcpmp_binary
 
 init:
   - ps: iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
   - scoop install cmake
   - scoop install ninja
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
-  - if "%platform%" == "x86" SET CFLAGS=-m32
-  - if "%platform%" == "x86" SET CXXFLAGS=-m32
+  #- if "%platform%" == "x86" SET CFLAGS=-m32
+  #- if "%platform%" == "x86" SET CXXFLAGS=-m32
 
 before_build:
   - git submodule update --init
@@ -20,3 +24,14 @@ before_build:
 
 build_script:
   - ninja package
+
+deploy:
+  - provider: GitHub
+    releases: $(APPVEYOR_REPO_TAG_NAME)
+    artifact: vcpmp_binary
+    auth_token: $($GITHUB_OAUTH_TOKEN)
+    draft: false
+    prerelease: false
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    on:
+      appveyor_repo_tag: true
