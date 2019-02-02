@@ -29,7 +29,8 @@ deploy:
   - provider: GitHub
     releases: $(APPVEYOR_REPO_TAG_NAME)
     artifact: vcpmp_binary
-    auth_token: $($GITHUB_OAUTH_TOKEN)
+    auth_token:
+      secure: H/kfdmAFQ0nHMTugTIt1un5B86FtB25iSsr7zBxRe+UyjyWUkfRYuguMS6rHzNuG
     draft: false
     prerelease: false
     tag: $(APPVEYOR_REPO_TAG_NAME)
